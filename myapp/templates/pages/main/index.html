@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="main-info">
+    <div id="main-info-content">
+        <h1>Small Library</h1>
+        <div>
+            <p>
+                With our service, you can expand your personal library and share your books with others,
+                as well as receive new and interesting books in return. No need to buy new books, just
+                exchange with others!
+            </p>
+            <p>
+                In addition, the site will have a convenient search function, allowing you to quickly find
+                the desired book, as well as recommendations based on your reading preferences.
+            </p>
+            <p>
+                Our service is free, safe and easy to use. All you need to do is register, create a profile
+                and start exchanging books with others. Our community is made up of book lovers from all over
+                the world, and you will always find someone who loves to read the same books as you do.
+            </p>
+            <p>
+                Join us and start exchanging books today! Let's create a world where knowledge and literature
+                can be shared freely between people.
+            </p>
+        </div>
+        <div id="btn-div">
+            {% if not current_user.is_authenticated %}
+            <a href="/login" class="main-color">Login</a>
+            <a href="/registration" class="main-color">Sign Up</a>
+            {% else %}
+            <a href="/books" class="main-color">See all books</a>
+            <a href="/users" class="main-color">See all users</a>
+            {% endif %}
+        </div>
+    </div>
+    <img src={{url_for('static',filename='img/main-page/bookshelf.png')}} id="bookshelf" alt="bookshelf">
+</div>
+{% endblock %}

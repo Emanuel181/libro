@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="sections">
+        <h1>Books</h1>
+        <div class="user-card">
+            {% for book in books_res %}
+            <p> {{ book.title }} || <a href="user/{{ book.owner }}">Ask owner</a> </p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

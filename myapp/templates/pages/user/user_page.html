@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="user-page">
+    <div id="user-header">
+        {% include 'pages/user/user-page/user-header.html' %}
+    </div>
+    <div id="user-lib">
+        <div id="user-profile">{% include 'pages/user/user-page/user-profile.html' %}</div>
+        <div id="books-profile">
+            {% include 'pages/user/user-page/user-books.html' %}
+            {% include 'pages/user/user-page/borrowed_books.html' %}
+        </div>
+    </div>
+</div>
+<script src="../static/js/show_more.js"></script>
+{% endblock %}

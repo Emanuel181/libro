@@ -1,0 +1,21 @@
+{% extends "pages/auth/auth.html" %}
+
+{% block content %}
+<h3 class="font-color">Please Login</h3>
+<form method="post" class="auth-form font-color main-color">
+    {{ form.hidden_tag() }}
+    <div class="form-floating">
+        <label class="font-color">{{ form.email.label }}</label>
+        {{ form.email }}
+    </div>
+    <div class="form-floating">
+        <label class="font-color">{{ form.psw.label }}</label>
+        {{ form.psw() }}
+    </div>
+    {{ form.submit() }}
+</form>
+<div id="login-footer">
+    <a href="/registration" class="font-color">New account</a>
+    <p class="font-color">© 2023</p>
+</div>
+{% endblock %}

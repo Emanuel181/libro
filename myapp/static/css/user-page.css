@@ -1,0 +1,45 @@
+/* User page */
+#user-page {font-family: 'Fredoka', sans-serif;}
+#user-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#plus-icon {width: 50px; height: 50px; fill: #dbe8d4;}
+
+
+#user-lib {flex-direction: column; padding: 1%;}
+
+#user-profile {
+    padding: 1%;
+    display: flex;
+    align-items: center;
+}
+#user-profile img {
+    width: 150px;
+    margin-right: 5%;
+}
+
+#books-profile {padding: 1%;}
+#user-books {display: flex; flex-direction: column;}
+
+.book-cards {display: flex; flex-wrap: wrap;}
+.book-card {
+    margin-right: 2%;
+    margin-bottom: 2%;
+    padding: 2%;
+    width: 25%;
+    background-color: #2d3e36;
+    border-radius: 10px;
+}
+
+.books-text {margin-bottom: 25px;}
+.books-text h4 {margin-top: 0; height: 20%;}
+.book-buttons {display: flex; flex-direction: row;}
+.book-buttons a {
+    padding: 2% 10%;
+    margin-right: 4%;
+    border: 1px solid;
+    border-radius: 25px;
+}
+.book-buttons a img {width: 100%;}

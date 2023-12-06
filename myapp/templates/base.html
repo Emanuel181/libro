@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Small_lib</title>
+    {% include 'base_part/css.html' %}
+</head>
+<body class="font-color">
+<header>{% include 'base_part/header.html' %}</header>
+<div id="main">
+    {% block content %}{% endblock %}
+</div>
+<footer>{% include 'base_part/footer.html' %}</footer>
+
+<script src={{url_for('static',filename='js/dropdown.js')}}></script>
+</body>
+</html>

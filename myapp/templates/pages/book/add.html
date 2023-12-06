@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="pages-main">
+<h1>Add Book</h1>
+<form method="post" id="book-form">
+    {{ form.hidden_tag() }}
+    <div id="book-and-author">
+        <div class="book-input">
+            <label class="font-color">{{ form.title.label }}</label>
+            {{ form.title }}
+        </div>
+        <div class="book-input">
+            <label class="font-color">{{ form.author.label }}</label>
+            {{ form.author }}
+        </div>
+    </div>
+    <div class="book-input">
+        <label class="font-color">{{ form.year_of_publication.label }}</label>
+        {{ form.year_of_publication }}
+    </div>
+    <div class="book-input">
+        <label class="font-color">{{ form.about.label }}</label>
+        {{ form.about }}
+    </div>
+    <button class="main-color font-color btn" type="submit">Add New Book</button>
+</form>
+</div>
+{% endblock %}

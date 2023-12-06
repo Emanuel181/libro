@@ -1,0 +1,40 @@
+<div id="user-books">
+  <h2>Books</h2>
+  <div class='book-cards'>
+    {% for user_book in user_books %}
+    <div class="book-card">
+      <div class="books-text">
+        <h4>{{ user_book.title }} ({{ user_book.author }})</h4>
+        <div>
+          {% if user_book.owner == user_book.user_id %}
+          <p>Status: in home</p>
+          {% else %}
+          <p>Status: loan to {{ users[user_book.user_id - 1].name }}</p>
+          {% endif %}
+        </div>
+        <div>
+          <p>Year of publication: {{ user_book.year_of_publication }}</p>
+          <p id="about_book" style="display: none;">{{ user_book.about }}</p>
+          <p id="show_more_btn">Show more -></p>
+        </div>
+      </div>
+      <div class="book-buttons">
+        {% if current_user.is_authenticated %}
+          {% if user_book.owner == user_book.user_id %}
+            {% if current_user.id == user.id %}
+              <a href="/book/change_info/{{ user_book.id }}" class="font-color main-color">Change</a>
+              <a href="/book/delete/{{ user_book.id }}" class="font-color main-color">Delete</a>
+            {% else %}
+              <a href="/book/exchange_request/{{ user_book.id }}" class="font-color main-color">Make a request</a>
+            {% endif %}
+          {% else %}
+            {% if current_user.id == user.id %}
+              <a href="/book/give_back/{{ user_book.id }}" class="font-color main-color">Give back</a>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
