@@ -16,7 +16,7 @@
 #btn-div {margin-top: 10%;}
 #btn-div a {padding: 2% 5%; margin-right: 5%; border: 1px solid; border-radius: 25px;}
 
-#bookshelf {width: 45%;}
+#bookshelf {width: 45%; margin-top: 50px}
 
 #main-books a {font-size: 20px;}
 #main-books-card {display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 2%;}
