@@ -10,6 +10,8 @@
                 <li><a class="dropdown-item font-color" href="/user/{{ current_user.id }}">My lib</a></li>
                 <li><a class="dropdown-item font-color" href="/user/user_settings/{{ current_user.id }}">Settings</a></li>
                 <li><a class="dropdown-item font-color" href="/logout" id="logout_btn">Logout</a></li>
+               <li><a class="dropdown-item font-color" href="{{ url_for('main.map_view') }}">Map</a></li>
+
             </ul>
         </div>
         {% else %}

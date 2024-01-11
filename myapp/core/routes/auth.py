@@ -1,7 +1,10 @@
 from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import login_required, current_user
 
-from myapp.core.functions.auth import user_logout_func, registration_func, user_login_func
+from myapp.core.functions.auth import user_logout_func, registration_func, user_login_func, get_shops
+from flask import jsonify, request, render_template
+
+from myapp.core.routes.main import main
 
 auth = Blueprint('auth', __name__)
 methods = ['GET', 'POST']
@@ -50,3 +53,22 @@ def user_login_view():
 def user_logout_view():
     user_logout_func()
     return redirect(url_for(redirect_url))
+
+
+@main.route('/get_nearby_shops', methods=["POST"])
+def get_nearby_shops():
+    data = request.get_json()
+    latitude = data['lat']
+    longitude = data['lon']
+    shops = get_shops(latitude, longitude)
+
+
+    shops_data = [{'lat': float(node.lat), 'lon': float(node.lon), 'name': node.tags.get('name', 'Unknown Shop')} for
+                  node in shops.nodes]
+
+    return jsonify(shops_data)
+
+
+@main.route('/map')
+def map_view():
+    return render_template('pages/map/map.html')

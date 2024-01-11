@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from myapp.core.forms.auth_forms import RegisterForm, LoginFrom
 from myapp.core.models.user import User, db
-
+import overpy
 
 def registration_func(request):
     form = RegisterForm()
@@ -47,3 +47,14 @@ def user_login_func(request):
 
 def user_logout_func():
     logout_user()
+
+def get_shops(latitude, longitude):
+    api = overpy.Overpass()
+    query = f"""
+        (node["shop"](around:1000,{latitude},{longitude});
+         node["building"="retail"](around:1000,{latitude},{longitude});
+         node["building"="supermarket"](around:1000,{latitude},{longitude});
+         node["healthcare"="pharmacy"](around:1000,{latitude},{longitude});
+        );out;
+    """
+    return api.query(query)
