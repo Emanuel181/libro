@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request
 from flask_login import login_required, current_user
 
 from myapp.core.functions.auth import user_logout_func, registration_func, user_login_func, get_shops
+from myapp.core.functions.user import get_all_users_with_coordinates
 from flask import jsonify, request, render_template
 
 from myapp.core.routes.main import main
@@ -71,4 +72,5 @@ def get_nearby_shops():
 
 @main.route('/map')
 def map_view():
-    return render_template('pages/map/map.html')
+    users_with_coordinates = get_all_users_with_coordinates()
+    return render_template('pages/map/map.html', usersWithCoordinates=users_with_coordinates)

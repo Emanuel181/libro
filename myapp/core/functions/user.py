@@ -54,3 +54,33 @@ def user_delete_func(user_id):
     delete_user = User.query.get(user_id)
     db.session.delete(delete_user)
     db.session.commit()
+
+def get_all_users_with_coordinates():
+    users_with_books = []
+
+    users = User.query.all()
+    db_query = query_to_db_all()
+    for user in users:
+        if user.place:
+            try:
+                lat, lon = map(float, user.place.split(','))
+
+                # Check if lat and lon are valid numbers
+                if not (isinstance(lat, (int, float)) and isinstance(lon, (int, float))):
+                    continue  # Skip this user if coordinates are not valid numbers
+
+                user_books = Book.query.filter_by(owner=user.id).all()
+                user_books = [book for book in db_query[1] if book.owner == user.id]
+                users_with_books.append({
+                    'id': user.id,
+                    'name': user.name,
+                    'email': user.email,
+                    'latitude': lat,
+                    'longitude': lon,
+                    'books': [{'title': book.title, 'author': book.author} for book in user_books]
+                })
+            except ValueError:
+                # Skip this user if there's an error in converting coordinates to numbers
+                continue
+
+    return users_with_books

@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="/static/css/estilios.css">
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Log users to the console for debugging
+        console.log('Users:', {{ usersWithCoordinates|tojson|safe }});
+        var usersWithCoordinates = {{ usersWithCoordinates|tojson|safe }};
+    </script>
     <style>
         body, html {
             margin: 0;
@@ -89,10 +94,12 @@
         <div class="map-control-button" onclick="zoomInMap()"><i class="fas fa-plus"></i> Zoom In</div>
         <div class="map-control-button" onclick="zoomOutMap()"><i class="fas fa-minus"></i> Zoom Out</div>
         <div class="map-control-button" onclick="centerMap()"><i class="fas fa-crosshairs"></i> Center Map</div>
+        <div class="map-control-button" onclick="addPointOnMap()"><i class="fas fa-map-marker"></i> Add Marker</div>
     </div>
     <script>
         var map;
         var userPosition;
+        var isAddingMarker = false;
 
         function getLocation() {
             if (navigator.geolocation) {
@@ -111,8 +118,25 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
 
-            fetchShops(position.coords.latitude, position.coords.longitude, map);
-            document.getElementById('preloader').style.display = 'none';
+            //fetchShops(position.coords.latitude, position.coords.longitude, map);
+            //showUsersOnMap(usersWithCoordinates);
+            //user=usersWithCoordinates
+            //L.marker([user.latitude, user.longitude]).addTo(map)
+                //.bindPopup(`User: ${user.name}<br>Coordinates: ${user.latitude}, ${user.longitude}`);
+
+                // Manually add your single account
+        var sampleUser = {
+            latitude: 45.75375327268143,
+            longitude: 21.225741505622864,
+            name: "Valentin",
+            email: "valica@gmail.com"
+        };
+
+        // Call showUsersOnMap with the sample user
+        showUsersOnMap(usersWithCoordinates);
+
+        document.getElementById('preloader').style.display = 'none';
+
         }
 
         function fetchShops(lat, lon, map) {
@@ -152,6 +176,80 @@
                 map.setView([userPosition.coords.latitude, userPosition.coords.longitude], 13);
             }
         }
+
+        function addPointOnMap() {
+    // Toggle marker-adding mode
+    isAddingMarker = !isAddingMarker;
+
+    // Remove existing markers
+    map.eachLayer(function (layer) {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
+
+    if (isAddingMarker) {
+        // Show a message to the user
+        alert('Click on the map to add a marker.');
+
+        // Listen for a click event on the map
+        map.on('click', function (event) {
+            // Create a marker at the clicked location
+            var marker = L.marker(event.latlng, { draggable: true }).addTo(map);
+
+            // Create a popup with coordinates and copy button
+            var popupContent = `<div>Coordinates: ${event.latlng.lat}, ${event.latlng.lng}</div>
+                                <button onclick="copyToClipboard('${event.latlng.lat}, ${event.latlng.lng}')">Copy to Clipboard</button>`;
+
+            marker.bindPopup(popupContent).openPopup();
+
+            // Listen for dragend event to update the popup coordinates
+            marker.on('dragend', function (event) {
+                var markerCoords = event.target.getLatLng();
+                marker.getPopup().setContent(`<div>Coordinates: ${markerCoords.lat}, ${markerCoords.lng}</div>
+                                             <button onclick="copyToClipboard('${markerCoords.lat}, ${markerCoords.lng}')">Copy to Clipboard</button>`);
+                marker.openPopup();
+            });
+
+            // Remove the click event listener after adding a marker
+            map.off('click');
+            isAddingMarker = false;  // Exit marker-adding mode
+        });
+    }
+}
+
+function copyToClipboard(text) {
+    // Create a temporary input element to copy text to clipboard
+    var tempInput = document.createElement('input');
+    document.body.appendChild(tempInput);
+    tempInput.value = text;
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    alert('Coordinates copied to clipboard!');
+}
+
+function showUsersOnMap(users) {
+    users.forEach(user => {
+        const booksList = user.books.length > 0
+            ? `<ul>${user.books.map(book => `<li>${book.title} by ${book.author}</li>`).join('')}</ul>`
+            : 'No books listed';
+
+        const popupContent = `
+            User: ${user.name}<br>
+            Email: ${user.email}<br>
+            Books: ${booksList}<br>
+            <a href="/user/${user.id}" class="btn btn-primary">Visit User's Page</a>
+        `;
+
+        L.marker([user.latitude, user.longitude]).addTo(map)
+            .bindPopup(popupContent);
+    });
+}
+
+
+
+
 
         window.onload = getLocation;
     </script>
